@@ -7,7 +7,7 @@ namespace OSC.Net
 {
     public static partial class Commands
     {
-        public static async Task<Uri> TakePicture(this ICameraClient client)
+        public static async Task<Uri> TakePicture(this ICameraClient client, bool useLocalFileUri = false)
         {
             await client.SetCaptureMode(CaptureMode.image);
 
@@ -28,14 +28,17 @@ namespace OSC.Net
                 status = await client.GetStatus<Model.TakePicture.Status.Result>(result.id);
             } while (status?.state == "inProgress");
 
-            return Uri.TryCreate(status?.results?.fileUrl, UriKind.Absolute, out var uri)
-                ? uri
-                : throw new Exception($"Failed to fetch status / uri for {result.id}");
+            Uri uri;
+            return
+                (useLocalFileUri && Uri.TryCreate(client.EndPoint, status?.results?._localFileUrl, out uri))
+                || Uri.TryCreate(status?.results?.fileUrl, UriKind.Absolute, out uri)
+                    ? uri
+                    : throw new Exception($"Failed to fetch status / uri for {result.id}");
         }
 
-        public static async Task TakePicture(this ICameraClient client, Stream targetStream)
+        public static async Task TakePicture(this ICameraClient client, Stream targetStream, bool useLocalFileUri = false)
         {
-            var uri = await client.TakePicture();
+            var uri = await client.TakePicture(useLocalFileUri);
 
             using (var sourceStream = await client.GetHttpClient().GetStreamAsync(uri))
             {
@@ -43,11 +46,11 @@ namespace OSC.Net
             }
         }
 
-        public static async Task TakePicture(this ICameraClient client, string path)
+        public static async Task TakePicture(this ICameraClient client, string path, bool useLocalFileUri = false)
         {
             using (var targetStream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                await client.TakePicture(targetStream);
+                await client.TakePicture(targetStream, useLocalFileUri);
             }
         }
     }
