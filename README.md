@@ -1,3 +1,5 @@
+[![NuGet Package](https://img.shields.io/nuget/v/OSC.Net)](https://www.nuget.org/packages/OSC.Net/)
+
 # OSC.Net
 .NET Standard Library for Open Spherical Camera API 2.0
 
