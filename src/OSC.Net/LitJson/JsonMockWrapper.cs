@@ -1,12 +1,12 @@
 #region Header
-/**
+/*
  * JsonMockWrapper.cs
  *   Mock object implementing IJsonWrapper, to facilitate actions like
  *   skipping data more efficiently.
  *
  * The authors disclaim copyright to this source code. For more details, see
  * the COPYING file included with this distribution.
- **/
+ */
 #endregion
 
 

@@ -7,12 +7,18 @@ namespace OSC.Net
 {
     public static partial class Commands
     {
+        /// <summary>
+        /// Takes picture and returns uri where it can be downloaded.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <param name="useLocalFileUri">Optional flag for if absolute uri returned from camera should be used or absolute uri created from <see cref="ICameraClient.EndPoint"/> and relative uri, useful if called through a proxy. Default value <c>false</c></param>
+        /// <returns>Absolute uri to image.</returns>
         public static async Task<Uri> TakePicture(this ICameraClient client, bool useLocalFileUri = false)
         {
             await client.SetCaptureMode(CaptureMode.image);
             await client.SetDateTime(DateTimeOffset.Now);
 
-            var result = await client.PostASJson<Model.TakePicture.Result>(new
+            var result = await client.PostAsJson<Model.TakePicture.Result>(new
             {
                 name = "camera.takePicture"
             });
@@ -37,6 +43,12 @@ namespace OSC.Net
                     : throw new Exception($"Failed to fetch status / uri for {result.id}");
         }
 
+        /// <summary>
+        /// Takes picture and downloads image to specified stream.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <param name="targetStream">The target stream image is downloaded to.</param>
+        /// <param name="useLocalFileUri">Optional flag for if absolute uri returned from camera should be used or absolute uri created from <see cref="ICameraClient.EndPoint"/> and relative uri, useful if called through a proxy. Default value <c>false</c></param>
         public static async Task TakePicture(this ICameraClient client, Stream targetStream, bool useLocalFileUri = false)
         {
             var uri = await client.TakePicture(useLocalFileUri);
@@ -47,6 +59,12 @@ namespace OSC.Net
             }
         }
 
+        /// <summary>
+        /// Takes picture and downloads image to specified local path.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <param name="path">The local path to download to.</param>
+        /// <param name="useLocalFileUri">Optional flag for if absolute uri returned from camera should be used or absolute uri created from <see cref="ICameraClient.EndPoint"/> and relative uri, useful if called through a proxy. Default value <c>false</c></param>
         public static async Task TakePicture(this ICameraClient client, string path, bool useLocalFileUri = false)
         {
             using (var targetStream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None))

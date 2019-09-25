@@ -5,12 +5,15 @@ using OSC.Net.Http;
 
 namespace OSC.Net
 {
+    /// <summary>
+    /// Contains <see cref="ICameraClient"/> commands extension methods.
+    /// </summary>
     public static partial class Commands
     {
         private static Uri ExecuteUri { get; } = new Uri("osc/commands/execute", UriKind.Relative);
         private static Uri ExecuteStatusUri { get; } = new Uri("osc/commands/status", UriKind.Relative);
 
-        private static async Task<TResult> PostASJson<TResult>(this ICameraClient client, object value, Uri uri = null)
+        private static async Task<TResult> PostAsJson<TResult>(this ICameraClient client, object value, Uri uri = null)
         {
             var response = await client.GetHttpClient().PostAsJsonAsync(
                 uri ?? ExecuteUri,
@@ -25,7 +28,7 @@ namespace OSC.Net
 
         private static async Task<TStatusResult> GetStatus<TStatusResult>(this ICameraClient client, string id)
         {
-            var result = await client.PostASJson<TStatusResult>(
+            var result = await client.PostAsJson<TStatusResult>(
                 uri: ExecuteStatusUri,
                 value: new
                 {

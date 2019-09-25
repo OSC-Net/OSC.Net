@@ -7,9 +7,14 @@ namespace OSC.Net
 {
     public static partial class Commands
     {
+        /// <summary>
+        /// Gets camera current date and time.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <returns>Camera current <see cref="DateTimeOffset"/>, <c>null</c> if failed to parse date.</returns>
         public static async Task<DateTimeOffset?> GetDateTime(this ICameraClient client)
         {
-            var result = await client.PostASJson<Model.GetOptions.Result<Model.GetDateTime.Options>>(new
+            var result = await client.PostAsJson<Model.GetOptions.Result<Model.GetDateTime.Options>>(new
             {
                 name = "camera.getOptions",
                 parameters = new
@@ -31,11 +36,16 @@ namespace OSC.Net
                 : null;
         }
 
+        /// <summary>
+        /// Sets camera current date and time.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <param name="dateTime">The <see cref="DateTimeOffset"/> to set.</param>
         public static async Task SetDateTime(this ICameraClient client, DateTimeOffset dateTime)
         {
            
 
-            var result = await client.PostASJson<Result>(new
+            var result = await client.PostAsJson<Result>(new
             {
                 name = "camera.setOptions",
                 parameters = new

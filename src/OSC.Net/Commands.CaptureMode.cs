@@ -7,9 +7,14 @@ namespace OSC.Net
 {
     public static partial class Commands
     {
+        /// <summary>
+        /// Gets camera current capture mode.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <returns>Current <see cref="CaptureMode"/>.</returns>
         public static async Task<CaptureMode> GetCaptureMode(this ICameraClient client)
         {
-            var result = await client.PostASJson<Model.GetOptions.Result<Model.GetCaptureMode.Options>>(new
+            var result = await client.PostAsJson<Model.GetOptions.Result<Model.GetCaptureMode.Options>>(new
             {
                 name = "camera.getOptions",
                 parameters = new
@@ -26,6 +31,12 @@ namespace OSC.Net
                 : CaptureMode.unknown;
         }
 
+        /// <summary>
+        /// Sets camera capture mode.
+        /// </summary>
+        /// <param name="client">The <see cref="ICameraClient"/> method extends.</param>
+        /// <param name="captureMode">Supported capture modes <see cref="CaptureMode.image"/> and <see cref="CaptureMode.video"/>.</param>
+        /// <returns></returns>
         public static async Task SetCaptureMode(this ICameraClient client, CaptureMode captureMode)
         {
             switch (captureMode)
@@ -42,7 +53,7 @@ namespace OSC.Net
                     throw new ArgumentOutOfRangeException(nameof(captureMode), captureMode, null);
             }
 
-            var result = await client.PostASJson<Result>(new
+            var result = await client.PostAsJson<Result>(new
             {
                 name = "camera.setOptions",
                 parameters = new
