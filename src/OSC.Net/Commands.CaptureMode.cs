@@ -20,7 +20,9 @@ namespace OSC.Net
                 }
             });
 
-            return result?.results?.options?.captureMode ?? CaptureMode.unknown;
+            return Enum.TryParse(result?.results?.options?.captureMode, true, out CaptureMode mode)
+                ? mode
+                : CaptureMode.unknown;
         }
 
         public static async Task SetCaptureMode(this ICameraClient client, CaptureMode captureMode)

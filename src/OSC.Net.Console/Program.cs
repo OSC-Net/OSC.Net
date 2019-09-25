@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using static System.Console;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using OSC.Net.Model;
 
 namespace OSC.Net.Console
@@ -10,8 +12,16 @@ namespace OSC.Net.Console
     {
         public static async Task Main(string[] args)
         {
-            var endpoint = new Uri("http://192.168.42.1");
-            var client = new CameraClient(endpoint);
+            var serviceProvider = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+            var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+
+
+            var client = Uri.TryCreate(
+                Environment.GetEnvironmentVariable("OSC.Net.Console.EndPoint"),
+                UriKind.Absolute,
+                out var endpoint)
+                ? new CameraClient(endpoint, httpClientFactory.CreateClient)
+                : new CameraClient(httpClientFactory.CreateClient);
 
             var pictureUri = await client.TakePicture(true);
             WriteLine("PictureUri: {0}", pictureUri);

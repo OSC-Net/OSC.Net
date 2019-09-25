@@ -2,6 +2,6 @@
 {
     public class Options
     {
-        public CaptureMode captureMode { get; set; }
+        public string captureMode { get; set; }
     }
 }
