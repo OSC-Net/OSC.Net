@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using OSC.Net.Http;
 
 namespace OSC.Net
 {

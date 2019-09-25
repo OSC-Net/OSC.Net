@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using OSC.Net.Http;
 
 namespace OSC.Net
 {

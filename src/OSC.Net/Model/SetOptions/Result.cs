@@ -1,6 +1,5 @@
-﻿namespace OSC.Net.Model.SetCaptureMode
+﻿namespace OSC.Net.Model.SetOptions
 {
-
     public class Result
     {
         public string name { get; set; }

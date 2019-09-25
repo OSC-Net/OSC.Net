@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using OSC.Net.Model;
+using OSC.Net.Model.SetOptions;
 
 namespace OSC.Net
 {
@@ -8,7 +9,7 @@ namespace OSC.Net
     {
         public static async Task<CaptureMode> GetCaptureMode(this ICameraClient client)
         {
-            var result = await client.PostASJson<Model.GetCaptureMode.Result>(new
+            var result = await client.PostASJson<Model.GetOptions.Result<Model.GetCaptureMode.Options>>(new
             {
                 name = "camera.getOptions",
                 parameters = new
@@ -41,7 +42,7 @@ namespace OSC.Net
                     throw new ArgumentOutOfRangeException(nameof(captureMode), captureMode, null);
             }
 
-            var result = await client.PostASJson<Model.SetCaptureMode.Result>(new
+            var result = await client.PostASJson<Result>(new
             {
                 name = "camera.setOptions",
                 parameters = new

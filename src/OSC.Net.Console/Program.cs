@@ -23,6 +23,15 @@ namespace OSC.Net.Console
                 ? new CameraClient(endpoint, httpClientFactory.CreateClient)
                 : new CameraClient(httpClientFactory.CreateClient);
 
+
+            var currentDateTime = await client.GetDateTime();
+            WriteLine(currentDateTime);
+
+            await client.SetDateTime(DateTimeOffset.Now);
+
+            currentDateTime = await client.GetDateTime();
+            WriteLine(currentDateTime);
+
             var pictureUri = await client.TakePicture(true);
             WriteLine("PictureUri: {0}", pictureUri);
 

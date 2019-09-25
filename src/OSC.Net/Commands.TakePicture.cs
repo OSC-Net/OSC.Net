@@ -10,6 +10,7 @@ namespace OSC.Net
         public static async Task<Uri> TakePicture(this ICameraClient client, bool useLocalFileUri = false)
         {
             await client.SetCaptureMode(CaptureMode.image);
+            await client.SetDateTime(DateTimeOffset.Now);
 
             var result = await client.PostASJson<Model.TakePicture.Result>(new
             {
