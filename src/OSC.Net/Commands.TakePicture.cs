@@ -67,7 +67,7 @@ namespace OSC.Net
         /// <param name="useLocalFileUri">Optional flag for if absolute uri returned from camera should be used or absolute uri created from <see cref="ICameraClient.EndPoint"/> and relative uri, useful if called through a proxy. Default value <c>false</c></param>
         public static async Task TakePicture(this ICameraClient client, string path, bool useLocalFileUri = false)
         {
-            using (var targetStream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None))
+            using (var targetStream = client.CreateFile(path))
             {
                 await client.TakePicture(targetStream, useLocalFileUri);
             }

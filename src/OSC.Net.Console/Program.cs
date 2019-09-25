@@ -20,8 +20,8 @@ namespace OSC.Net.Console
                 Environment.GetEnvironmentVariable("OSC.Net.Console.EndPoint"),
                 UriKind.Absolute,
                 out var endpoint)
-                ? new CameraClient(endpoint, httpClientFactory.CreateClient)
-                : new CameraClient(httpClientFactory.CreateClient);
+                ? new CameraClient(endpoint, createClient: httpClientFactory.CreateClient)
+                : new CameraClient(createClient: httpClientFactory.CreateClient);
 
 
             var currentDateTime = await client.GetDateTime();

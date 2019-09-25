@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 
 namespace OSC.Net
@@ -18,5 +19,12 @@ namespace OSC.Net
         /// </summary>
         /// <returns></returns>
         HttpClient GetHttpClient();
+
+        /// <summary>
+        /// Creates a new file for given path.
+        /// </summary>
+        /// <param name="path">Local path.</param>
+        /// <returns><see cref="Stream"/> to file.</returns>
+        Stream CreateFile(string path);
     }
 }
